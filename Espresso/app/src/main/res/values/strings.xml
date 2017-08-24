@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Espresso</string>
+    <string name="toast_refresh">Refreshing&#8230;</string>
+    <string name="text">text</string>
+    <string name="edit_text">edit text</string>
+    <string name="button">button</string>
+    <string name="text_clicked">text clicked!</string>
+    <string name="button_clicked">button clicked!</string>
+</resources>
