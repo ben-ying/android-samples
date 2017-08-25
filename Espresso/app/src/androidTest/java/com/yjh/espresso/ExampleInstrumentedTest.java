@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,21 +19,22 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static java.util.EnumSet.allOf;
+import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ExampleInstrumentedTest {
+
+    private static final int INTERVAL = 1000;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
@@ -46,21 +46,33 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.yjh.espresso", appContext.getPackageName());
 
-//        onView(withText(appContext.getString(R.string.text))).check(matches(isDisplayed()));
-//        onView(withId(R.id.button)).check(matches(isDisplayed()));
-//        onView(withId(R.id.et)).perform(clearText(),
-//                typeText(appContext.getString(R.string.edit_text)), click());
-
-//        onView(allOf(withId(R.id.button), isDescendantOfA(firstChildOf(withId(R.id.viewpager)))))
-//                .perform(click());
-//        onView(withId(R.id.button)).perform(click());
-//        onView(allOf(withId(R.id.button), isDescendantOfA(
-//                getChildAtPosition(withId(R.id.view_pager), 1)))).perform(click());
+        // swipe viewpager to next page
         onView(withId(R.id.view_pager)).perform(swipeLeft());
-//        onView(withId(R.id.text)).perform(click());
-        onView(withId(R.id.button)).perform(click());
-//        onView(withId(R.id.button)).check(doesNotExist());
-        SystemClock.sleep(5000);
+        SystemClock.sleep(INTERVAL);
+        // find a button, id is R.id.button and perform click
+        onView(withId(R.id.button1)).perform(click());
+        SystemClock.sleep(INTERVAL);
+        // find an editText, id is R.id.edit_text and replace text and then click
+        onView(withId(R.id.edit_text)).perform(clearText(),
+                typeText(appContext.getString(R.string.edit_text_clicked)),
+                click(), closeSoftKeyboard());
+        SystemClock.sleep(INTERVAL);
+        // find a textView, id is R.id.text and text is R.string.text and then click
+        onView(allOf(withId(R.id.text_view), withText(
+                appContext.getString(R.string.text_view)))).perform(click());
+        SystemClock.sleep(INTERVAL);
+        // scroll to button2 and click
+        onView(withId(R.id.button2)).perform(scrollTo(), click());
+        SystemClock.sleep(INTERVAL);
+        // check button2's text is R.string.button_clicked
+        onView(withId(R.id.button2)).check(matches(
+                withText(appContext.getString(R.string.button_clicked))));
+        SystemClock.sleep(INTERVAL);
+        onView(withId(R.id.button1)).perform(scrollTo());
+        SystemClock.sleep(INTERVAL);
+
+        // remain 5s
+        SystemClock.sleep(5 * INTERVAL);
     }
 
     public static Matcher<View> getChildAtPosition(
