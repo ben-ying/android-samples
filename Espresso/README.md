@@ -218,12 +218,12 @@ onData(withItemContent("item: 10"))
 RecyclerView objects work differently than AdapterView objects, so onData() cannot be used to interact with them.
 
 To interact with RecyclerViews using Espresso, you can use the espresso-contrib package, which has a collection of RecyclerViewActions that can be used to scroll to positions or to perform actions on items:
-scrollTo() - Scrolls to the matched View.
-scrollToHolder() - Scrolls to the matched View Holder.
-scrollToPosition() - Scrolls to a specific position.
-actionOnHolderItem() - Performs a View Action on a matched View Holder.
-actionOnItem() - Performs a View Action on a matched View.
-actionOnItemAtPosition() - Performs a ViewAction on a view at a specific position.
+1. scrollTo() - Scrolls to the matched View.
+2. scrollToHolder() - Scrolls to the matched View Holder.
+3. scrollToPosition() - Scrolls to a specific position.
+4. actionOnHolderItem() - Performs a View Action on a matched View Holder.
+5. actionOnItem() - Performs a View Action on a matched View.
+6. actionOnItemAtPosition() - Performs a ViewAction on a view at a specific position.
 ```java
 @Test
 public void scrollToItemBelowFoldCheckItsText() {
