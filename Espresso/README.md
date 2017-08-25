@@ -126,7 +126,7 @@ public void testActionBarOverflow() {
     // Open the overflow menu from contextual action mode.
     // openContextualActionModeOverflowMenu();
 
-    // Click the item.
+    // Click the item, overflow menu cannot use withId.
     onView(withText("World"))
         .perform(click());
 
