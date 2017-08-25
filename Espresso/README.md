@@ -87,7 +87,10 @@ onView(withId(R.id.text_view)).check(matches(withText("Hello!")));
 
 ## Espresso recipes
 
-### Often, the non-unique view will be paired with some unique label that’s located next to it, such as a name of the contact next to the call button. In this case, you can use the hasSibling() matcher to narrow down your selection:
+### Matching a view next to another view
+
+A layout could contain certain views that are not unique by themselves. For example, a repeating call button in a table of contacts could have the same R.id, contain the same text, and have the same properties as other call buttons within the view hierarchy.
+Often, the non-unique view will be paired with some unique label that’s located next to it, such as a name of the contact next to the call button. In this case, you can use the hasSibling() matcher to narrow down your selection:
 ```java
 onView(allOf(withText("7"), hasSibling(withText("item: 0")))).perform(click());
 ```
