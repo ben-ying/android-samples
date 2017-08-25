@@ -215,6 +215,11 @@ onData(withItemContent("item: 10"))
 ```
 ### Interacting with recycler view list items
 
+1. Open your app’s build.gradle file. This is usually not the top-level build.gradle file but app/build.gradle.
+2. Add the following lines inside dependencies:
+```java
+androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.0'
+```
 RecyclerView objects work differently than AdapterView objects, so onData() cannot be used to interact with them.
 
 To interact with RecyclerViews using Espresso, you can use the espresso-contrib package, which has a collection of RecyclerViewActions that can be used to scroll to positions or to perform actions on items:
