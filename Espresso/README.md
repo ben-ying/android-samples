@@ -244,21 +244,6 @@ public void scrollToItemBelowFoldCheckItsText() {
     onView(withText(itemElementText)).check(matches(isDisplayed()));
 }
 ```
-```java
-@Test
-public void itemInMiddleOfListHasSpecialText() {
-    // First, scroll to the view holder using the isInTheMiddle() matcher.
-    onView(ViewMatchers.withId(R.id.recyclerView))
-            .perform(RecyclerViewActions.scrollToHolder(isInTheMiddle()));
-
-    // Check that the item has the special text.
-    String middleElementText =
-            mActivityRule.getActivity().getResources()
-            .getString(R.string.middle);
-    onView(withText(middleElementText)).check(matches(isDisplayed()));
-}
-```
-
 ### Using a custom failure handler
 
 This failure handler throws a MySpecialException instead of a NoMatchingViewException and delegates all other failures to the DefaultFailureHandler.
@@ -288,25 +273,3 @@ public void setUp() throws Exception {
                                               .getTargetContext()));
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
