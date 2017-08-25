@@ -7,4 +7,6 @@
     <string name="text_clicked">TextView clicked!</string>
     <string name="button_clicked">Button clicked!</string>
     <string name="edit_text_clicked">EditText clicked!</string>
+    <string name="save">Save</string>
+    <string name="setting">Setting</string>
 </resources>

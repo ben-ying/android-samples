@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends
 
         EspressoViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tv);
+            textView = itemView.findViewById(R.id.text_view);
         }
     }
 }

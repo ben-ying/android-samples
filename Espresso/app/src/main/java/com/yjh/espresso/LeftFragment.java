@@ -61,7 +61,7 @@ public class LeftFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(getContext(), R.string.toast_refresh, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.toast_refresh, Toast.LENGTH_SHORT).show();
         }
 
         @Override
