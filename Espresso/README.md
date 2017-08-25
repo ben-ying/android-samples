@@ -7,6 +7,9 @@
 ```java
 androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.0'
 androidTestCompile 'com.android.support.test:runner:1.0.0'
+```
+3. Add to the same build.gradle file the following line in android.defaultConfig:
+```java
 testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 ```
 ### Example Gradle build file
