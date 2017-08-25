@@ -117,8 +117,10 @@ public void testActionBarOverflow() {
 
     // Open the options menu OR open the overflow menu, depending on whether
     // the device has a hardware or software overflow menu button.
+    // If the menu item is visible comment this line
     openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
     // Open the overflow menu from contextual action mode.
+    // If the menu item is visible comment this line
     // openContextualActionModeOverflowMenu();
 
     // Click the item.
