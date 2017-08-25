@@ -68,8 +68,9 @@ Click on the view:
 ```java
 onView(withId(R.id.button)).perform(click());
 ```
-### If onView() does not find the target view, a NoMatchingViewException is thrown. You can examine the view hierarchy in the exception string to analyze why the matcher did not match any views.
-### If onView() finds multiple views that match the given matcher, an AmbiguousViewMatcherException is thrown.
+If onView() does not find the target view, a NoMatchingViewException is thrown. You can examine the view hierarchy in the exception string to analyze why the matcher did not match any views.
+
+If onView() finds multiple views that match the given matcher, an AmbiguousViewMatcherException is thrown.
 
 You can execute more than one action with one perform call:
 ```java
@@ -90,6 +91,7 @@ onView(withId(R.id.text_view)).check(matches(withText("Hello!")));
 ### Matching a view next to another view
 
 A layout could contain certain views that are not unique by themselves. For example, a repeating call button in a table of contacts could have the same R.id, contain the same text, and have the same properties as other call buttons within the view hierarchy.
+
 Often, the non-unique view will be paired with some unique label that’s located next to it, such as a name of the contact next to the call button. In this case, you can use the hasSibling() matcher to narrow down your selection:
 ```java
 onView(allOf(withText("7"), hasSibling(withText("item: 0")))).perform(click());
@@ -171,35 +173,6 @@ public void testDataItemNotInAdapter(){
     }
 }
 ```
-### Using a custom failure handler
-
-This failure handler throws a MySpecialException instead of a NoMatchingViewException and delegates all other failures to the DefaultFailureHandler.
-```java
-private static class CustomFailureHandler implements FailureHandler {
-    private final FailureHandler delegate;
-
-    public CustomFailureHandler(Context targetContext) {
-        delegate = new DefaultFailureHandler(targetContext);
-    }
-
-    @Override
-    public void handle(Throwable error, Matcher<View> viewMatcher) {
-        try {
-            delegate.handle(error, viewMatcher);
-        } catch (NoMatchingViewException e) {
-            throw new MySpecialException(e);
-        }
-    }
-}
-
-@Override
-public void setUp() throws Exception {
-    super.setUp();
-    getActivity();
-    setFailureHandler(new CustomFailureHandler(getInstrumentation()
-                                              .getTargetContext()));
-}
-```
 ### Matching a header or footer in a list view
 
 For the LongListActivity:
@@ -278,6 +251,36 @@ public void itemInMiddleOfListHasSpecialText() {
             mActivityRule.getActivity().getResources()
             .getString(R.string.middle);
     onView(withText(middleElementText)).check(matches(isDisplayed()));
+}
+```
+
+### Using a custom failure handler
+
+This failure handler throws a MySpecialException instead of a NoMatchingViewException and delegates all other failures to the DefaultFailureHandler.
+```java
+private static class CustomFailureHandler implements FailureHandler {
+    private final FailureHandler delegate;
+
+    public CustomFailureHandler(Context targetContext) {
+        delegate = new DefaultFailureHandler(targetContext);
+    }
+
+    @Override
+    public void handle(Throwable error, Matcher<View> viewMatcher) {
+        try {
+            delegate.handle(error, viewMatcher);
+        } catch (NoMatchingViewException e) {
+            throw new MySpecialException(e);
+        }
+    }
+}
+
+@Override
+public void setUp() throws Exception {
+    super.setUp();
+    getActivity();
+    setFailureHandler(new CustomFailureHandler(getInstrumentation()
+                                              .getTargetContext()));
 }
 ```
 
