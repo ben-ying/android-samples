@@ -68,6 +68,9 @@ Click on the view:
 ```java
 onView(withId(R.id.button)).perform(click());
 ```
+### If onView() does not find the target view, a NoMatchingViewException is thrown. You can examine the view hierarchy in the exception string to analyze why the matcher did not match any views.
+### If onView() finds multiple views that match the given matcher, an AmbiguousViewMatcherException is thrown.
+
 You can execute more than one action with one perform call:
 ```java
 onView(withId(R.id.edit_text)).perform(typeText("Hello"), click());
