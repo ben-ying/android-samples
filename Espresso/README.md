@@ -1,7 +1,7 @@
 # Espresso Sample Tutorial
 
 
-## Set up your test environment
+## Set up your environment
 1. Open your app’s build.gradle file. This is usually not the top-level build.gradle file but app/build.gradle.
 2. Add the following lines inside dependencies:
 ```java
