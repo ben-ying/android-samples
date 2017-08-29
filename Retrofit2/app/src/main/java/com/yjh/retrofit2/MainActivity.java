@@ -22,6 +22,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,38 +42,34 @@ public class MainActivity extends AppCompatActivity {
 
         mTextView = findViewById(R.id.text_view);
         mTextView.setMovementMethod(new ScrollingMovementMethod());
-        String token = "1272dc0fe06c52383c7a9bdfef33255b940c195b";
+        final String token = "1272dc0fe06c52383c7a9bdfef33255b940c195b";
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addCallAdapterFactory(CustomCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl("http://www.bensbabycare.com/webservice/")
                 .build();
         Webservice webservice = retrofit.create(Webservice.class);
-//        Call<ResponseBody> call = webservice.login("babycare",
-//                MD5Utils.getMD5ofStr("md51988123456").toLowerCase());
-//        Call<CustomResponse> call = webservice.getEvents(token, "1");
-//        Call<ResponseBody> call = webservice.deleteEvent("22", token);
-//        call.enqueue(new Callback<CustomResponse>() {
-//            @Override
-//            public void onResponse(Call<CustomResponse> call, Response<CustomResponse> response) {
-//                try {
-////                    mTextView.setText(new JSONObject(response.body().getResult()).toString(4));
-//                    mTextView.setText(new JSONObject(response.body().getResult().toString()).toString(4));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CustomResponse> call, Throwable t) {
-//                mTextView.setText(t.getLocalizedMessage());
-//            }
-//        });
+        Call<ResponseBody> call = webservice.deleteEvent("22", token);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    mTextView.setText(new JSONObject(response.body().toString()).toString(4));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mTextView.setText(t.getLocalizedMessage());
+            }
+        });
+
         webservice.getEvents(token, "1")
-//                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<CustomResponse<ListResponseResult<List<Event>>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -99,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        Call<String> call = webservice.login("babycare",
+        Call<String> call1 = webservice.login("babycare",
                 MD5Utils.getMD5ofStr("md51988123456").toLowerCase());
-        call.enqueue(new Callback<String>() {
+        call1.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
@@ -117,13 +114,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        CustomCall<String> customCall = webservice.getEventList(token, "1");
-//        try {
-//            String result = customCall.get();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Log.d("", "");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Retrofit rtf = new Retrofit.Builder()
+                            .addConverterFactory(StringConverterFactory.create())
+                            .addCallAdapterFactory(CustomCallAdapterFactory.create())
+                            .baseUrl("http://www.bensbabycare.com/webservice/")
+                            .build();
+                    Webservice service = rtf.create(Webservice.class);
+                    CustomCall<String> customCall = service.getEventList(token, "1");
+                    String result = customCall.get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

@@ -1,6 +1,5 @@
 package com.yjh.retrofit2.model;
 
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class CustomResponse<T> {

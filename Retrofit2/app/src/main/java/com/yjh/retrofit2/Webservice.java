@@ -29,9 +29,9 @@ public interface Webservice {
     Observable<CustomResponse<ListResponseResult<List<Event>>>> getEvents(@Query("token") String token,
                                                             @Query("user_id") String userId);
 
-//    @GET("events")
-//    CustomCall<String> getEventList(@Query("token") String token,
-//                         @Query("user_id") String userId);
+    @GET("events")
+    CustomCall<String> getEventList(@Query("token") String token,
+                         @Query("user_id") String userId);
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "events/{eventId}", hasBody = true)
