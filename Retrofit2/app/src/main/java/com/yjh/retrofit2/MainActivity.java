@@ -44,12 +44,16 @@ public class MainActivity extends AppCompatActivity {
         mTextView.setMovementMethod(new ScrollingMovementMethod());
         final String token = "1272dc0fe06c52383c7a9bdfef33255b940c195b";
         Retrofit retrofit = new Retrofit.Builder()
+                // custom converter (String)
                 .addConverterFactory(StringConverterFactory.create())
+                // json converter
                 .addConverterFactory(GsonConverterFactory.create())
+                // custom CallAdapter
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl("http://www.bensbabycare.com/webservice/")
                 .build();
         Webservice webservice = retrofit.create(Webservice.class);
+        // Basic response
         Call<ResponseBody> call = webservice.deleteEvent("22", token);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Retrofit Adapters
         webservice.getEvents(token, "1")
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<CustomResponse<ListResponseResult<List<Event>>>>() {
@@ -96,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        // custom converter (String)
         Call<String> call1 = webservice.login("babycare",
                 MD5Utils.getMD5ofStr("md51988123456").toLowerCase());
         call1.enqueue(new Callback<String>() {
@@ -114,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Custom CallAdapter
         new Thread(new Runnable() {
             @Override
             public void run() {
