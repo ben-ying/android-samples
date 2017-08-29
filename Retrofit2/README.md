@@ -41,7 +41,7 @@ The @Body annotation on a method parameter tells Retrofit to use the object as t
 @POST("users")
 Call<ResponseBody> postUser(@Body User user)
 ```
-### Example
+## Example
 Webservice.java:
 ```java
 public interface Webservice {
@@ -73,7 +73,7 @@ call.enqueue(new Callback<ResponseBody>() {
 });
 ```      
 
-### Retrofit Converters
+## Retrofit Converters
 Retrofit can be configured to use a specific converter. This converter handles the data (de)serialization. Several converters are already available for various serialization formats.
 To convert to and from JSON, add this line to build.gradle:
 ```java
@@ -110,7 +110,7 @@ call.enqueue(new Callback<User>() {
     }
 });
 ```
-### Retrofit Adapters
+## Retrofit Adapters
 Retrofit can also be extended by adapters to get involved with other libraries like RxJava 2.x, Java 8 and Guava.
 RxJava 2.x adapter can be obtained by using Gradle:
 ```java
@@ -157,8 +157,115 @@ With this adapter being applied the Retrofit interfaces are able to return RxJav
 @GET("users")
 Observable<List<User>> getUsers();
 ```
+## Create Your Own Converter
+Implement Your Custom JSON Converter.
+From Call<ResponseBody> to Call<String>
+```java
+public static class StringConverter implements Converter<ResponseBody, String> {
 
+  private static final StringConverter INSTANCE = new StringConverter();
+  
+  public static StringConverter create() {
+    return INSTANCE;
+  }
 
+  @Override
+  public String convert(ResponseBody value) throws IOException {
+    return value.string();
+  }
+}
+```
+```java
+public static class StringConverterFactory extends Converter.Factory {
+
+  private static final StringConverterFactory INSTANCE = new StringConverterFactory();
+
+  public static StringConverterFactory create() {
+    return INSTANCE;
+  }
+  
+  @Override
+  public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
+    if (type == String.class) {
+      return StringConverter.create();
+    }
+    return null;
+  }
+}
+```
+```java
+Retrofit retrofit = new Retrofit.Builder()
+      .baseUrl("http://localhost:4567/")
+      // put before GsonConverterFactory
+      .addConverterFactory(StringConverterFactory.create())
+      .addConverterFactory(GsonConverterFactory.create())
+      .build();
+```
+
+## Custom CallAdapter
+```java
+public class CustomCall<T> {
+    private final Call<T> call;
+
+    public CustomCall(Call<T> call) {
+        this.call = call;
+    }
+
+    public T get() throws IOException {
+        return call.execute().body();
+    }
+}
+```
+```java
+public class CustomCallAdapter<T> implements CallAdapter<T, CustomCall<T>> {
+    private final Type responseType;
+
+    public CustomCallAdapter(Type responseType) {
+        this.responseType = responseType;
+    }
+
+    @Override
+    public Type responseType() {
+        return responseType;
+    }
+
+    @Override
+    public CustomCall<T> adapt(@NonNull Call<T> call) {
+        return new CustomCall<>(call);
+    }
+}
+```
+```java
+public class CustomCallAdapterFactory extends CallAdapter.Factory {
+    private static final CustomCallAdapterFactory INSTANCE = new CustomCallAdapterFactory();
+
+    public static CustomCallAdapterFactory create() {
+        return INSTANCE;
+    }
+
+    @Nullable
+    @Override
+    public CallAdapter<?, ?> get(@NonNull Type returnType,
+                                 @Nullable Annotation[] annotations,
+                                 @Nullable Retrofit retrofit) {
+        Class<?> rawType = getRawType(returnType);
+
+        if (rawType == CustomCall.class && returnType instanceof ParameterizedType) {
+            Type callReturnType = getParameterUpperBound(0, (ParameterizedType) returnType);
+            return new CustomCallAdapter(callReturnType);
+        }
+        return null;
+    }
+}
+```
+```java
+Retrofit retrofit = new Retrofit.Builder()
+      .baseUrl("http://domain/")
+      .addConverterFactory(StringConverterFactory.create())
+      .addConverterFactory(GsonConverterFactory.create())
+      .addCallAdapterFactory(CustomCallAdapterFactory.create())
+      .build();
+```
 
 
 
