@@ -11,7 +11,7 @@ public class CustomResponse<T> {
     @SerializedName("code")
     private int code;
     @SerializedName("result")
-    private ListResponseResult<T> result;
+    private T result;
 
     public boolean isSuccessful() {
         return code == SUCCESS_CODE;
@@ -33,11 +33,11 @@ public class CustomResponse<T> {
         this.code = code;
     }
 
-    public ListResponseResult<T> getResult() {
+    public T getResult() {
         return result;
     }
 
-    public void setResult(ListResponseResult<T> result) {
+    public void setResult(T result) {
         this.result = result;
     }
 }

@@ -14,6 +14,10 @@ public class ListResponseResult<T> {
     @SerializedName("results")
     private T results;
 
+    public ListResponseResult(ListResponseResult<T> result) {
+        this.results = result.getResults();
+    }
+
     public int getCount() {
         return count;
     }
