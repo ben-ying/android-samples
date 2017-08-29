@@ -41,6 +41,33 @@ The @Body annotation on a method parameter tells Retrofit to use the object as t
 @POST("users")
 Call<ResponseBody> postUser(@Body User user)
 ```
+Form-encoded data is sent when @FormUrlEncoded is present on the method. Each key-value pair is annotated with @Field containing the name and the object providing the value.
+```java
+@FormUrlEncoded
+@POST("user/edit")
+Call<User> updateUser(@Field("first_name") String first, @Field("last_name") String last);
+```
+Multipart requests are used when @Multipart is present on the method. Parts are declared using the @Part annotation.
+```java
+@Multipart
+@PUT("user/photo")
+Call<User> updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
+```
+You can set static headers for a method using the @Headers annotation.
+```java
+@Headers("Cache-Control: max-age=640000")
+@GET("widget/list")
+Call<List<Widget>> widgetList();
+```
+```java
+@Headers({
+    "Accept: application/vnd.github.v3.full+json",
+    "User-Agent: Retrofit-Sample-App"
+})
+@GET("users/{username}")
+Call<User> getUser(@Path("username") String username);
+```
+
 ## Example
 Webservice.java:
 ```java
@@ -110,6 +137,7 @@ call.enqueue(new Callback<User>() {
     }
 });
 ```
+
 ## Retrofit Adapters
 Retrofit can also be extended by adapters to get involved with other libraries like RxJava 2.x, Java 8 and Guava.
 RxJava 2.x adapter can be obtained by using Gradle:
@@ -157,6 +185,7 @@ With this adapter being applied the Retrofit interfaces are able to return RxJav
 @GET("users")
 Observable<List<User>> getUsers();
 ```
+
 ## Create Your Own Converter
 Implement Your Custom JSON Converter.
 From Call<ResponseBody> to Call<String>
@@ -266,28 +295,4 @@ Retrofit retrofit = new Retrofit.Builder()
       .addCallAdapterFactory(CustomCallAdapterFactory.create())
       .build();
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
