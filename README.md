@@ -1,6 +1,6 @@
 # android-samples
 
-[Espresso][1] - Espresso is a testing framework for Android to make it easy to write reliable user interface tests.
+[Espresso][1] - A testing framework for Android to make it easy to write reliable user interface tests.
 
 [Retrofit2][2] - A type-safe HTTP client for Android and Java
 
