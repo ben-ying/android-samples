@@ -24,35 +24,91 @@ If you are using ProGuard in your project add the following lines to your config
 Every method of an interface represents one possible API call. It must have a HTTP annotation (GET, POST, etc.) to specify the request type and the relative URL. The return value wraps the response in a Call object with the type of the expected result.
 ```java
 @GET("users")
-Call<List<User>> getUsers()
+Call<ResponseBody> getUsers()
 ```
 You can use replacement blocks and query parameters to adjust the URL. A replacement block is added to the relative URL with {}. With the help of the @Path annotation on the method parameter, the value of that parameter is bound to the specific replacement block.
 ```java
 @GET("users/{name}/commits")
-Call<List<Commit>> getCommitsByName(@Path("name") String name)
+Call<ResponseBody> getCommitsByName(@Path("name") String name)
 ```
 Query parameters are added with the @Query annotation on a method parameter. They are automatically added at the end of the URL.
 ```java
 @GET("users")
-Call<User> getUserById(@Query("id") Integer id)
+Call<ResponseBody> getUserById(@Query("id") Integer id)
 ```
 The @Body annotation on a method parameter tells Retrofit to use the object as the request body for the call.
 ```java
 @POST("users")
-Call<User> postUser(@Body User user)
+Call<ResponseBody> postUser(@Body User user)
 ```
+### Example
+Webservice.java:
+```java
+public interface Webservice {
+    @GET("user/{id}")
+    Call<ResponseBody> getUser(@Path("id") int id);
+}
+```
+MainActivity.java:
+```java
+Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("http://domain/")
+        .build();
+Webservice service = retrofit.create(Webservice.class);
+Call<ResponseBody> call = service.getUser(2);
+call.enqueue(new Callback<ResponseBody>() {
+    @Override
+    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        try {
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable t) {
+        t.printStackTrace();
+    }
+});
+```      
+
 ### Retrofit Converters
 Retrofit can be configured to use a specific converter. This converter handles the data (de)serialization. Several converters are already available for various serialization formats.
 To convert to and from JSON, add this line to build.gradle:
 ```java
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 ```
+Webservice.java
+```java
+public interface Webservice {
+  @GET("user/{id}")
+  Call<User> getUser(@Path("id") int id);
+}
+```
+MainActivity.java
 ```java
 Retrofit retrofit = new Retrofit.Builder()
       .baseUrl("http://domain/")
       // convert to and from JSON
       .addConverterFactory(GsonConverterFactory.create())
-      .build();
+      .build();  
+Call<User> call = service.getUser(2);
+call.enqueue(new Callback<User>() {
+    @Override
+    public void onResponse(Call<User> call, Response<User> response) {
+        try {
+            System.out.println(response.getName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFailure(Call<User> call, Throwable t) {
+        t.printStackTrace();
+    }
+});
 ```
 ### Retrofit Adapters
 Retrofit can also be extended by adapters to get involved with other libraries like RxJava 2.x, Java 8 and Guava.
@@ -60,11 +116,41 @@ RxJava 2.x adapter can be obtained by using Gradle:
 ```java
 compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 ```
+Webservice.java
+```java
+public interface Webservice {
+  @POST("/users")
+  Observable<List<User>> getUsers();
+}
+```
+MainActivity.java
 ```java
 Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl("http://domain/")
-    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-    .build();
+      .baseUrl("http://domain/")
+      // convert to and from JSON
+      .addConverterFactory(GsonConverterFactory.create())
+      // retrofit adapter
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) 
+      .build();
+Webservice service = retrofit.create(Webservice.class);
+service.getBlogs()
+  .subscribeOn(Schedulers.io())
+  .subscribe(new Subscriber<List<User>>() {
+      @Override
+      public void onCompleted() {
+        System.out.println("onCompleted");
+      }
+
+      @Override
+      public void onError(Throwable e) {
+        System.err.println("onError");
+      }
+
+      @Override
+      public void onNext(List<User> users) {
+        System.out.println(users.toString());
+      }
+  });
 ```
 With this adapter being applied the Retrofit interfaces are able to return RxJava 2.x types, e.g., Observable, Flowable or Single and so on.
 ```java
