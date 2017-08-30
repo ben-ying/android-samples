@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RxJava</string>
+    <string name="search">Search</string>
+    <string name="nothing_found">No cheeses found</string>
 </resources>
