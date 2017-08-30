@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<CustomResponse<ListResponseResult<List<Event>>>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                        public void onSubscribe(Disposable d) {
                         Log.d(TAG, "disposable: " + d.toString());
                     }
 
