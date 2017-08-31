@@ -62,13 +62,8 @@ protected void onStop() {
     if (mDisposable != null && !mDisposable.isDisposed()) {
         mDisposable.dispose();
     }
-}
-
-@Override
-protected void onDestroy() {
-    super.onDestroy();
     if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
-        mCompositeDisposable.clear();
+        mCompositeDisposable.dispose();
     }
 }
 ```
