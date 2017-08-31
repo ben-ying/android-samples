@@ -4,10 +4,10 @@
 
 [Retrofit2][2] - A type-safe HTTP client for Android and Java.
 
-[RxJava][3] - A library for composing asynchronous and event-based programs by using observable sequences.
+[RxJava2][3] - A library for composing asynchronous and event-based programs by using observable sequences.
 
 
 
 [1]: https://github.com/ben-ying/android-samples/tree/master/Espresso
 [2]: https://github.com/ben-ying/android-samples/tree/master/Retrofit2
-[3]: https://github.com/ben-ying/android-samples/tree/master/RxJava
+[3]: https://github.com/ben-ying/android-samples/tree/master/RxJava2
