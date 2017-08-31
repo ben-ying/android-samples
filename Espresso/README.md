@@ -1,4 +1,4 @@
-# Espresso Sample Tutorial
+# Espresso Tutorial
 
 
 ## Set up your environment
