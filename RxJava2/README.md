@@ -231,7 +231,7 @@ private void compositeDisposableExample() {
 }
 ```
 ## Examples for rxjava operations
-#### an example for the RxJava mutipley operators
+#### An example for the RxJava mutipley operators
 ```java
 private void operatorsExample() {
     mDisposable = createButtonClickObservable()
@@ -344,7 +344,7 @@ protected void showResult(List<String> result) {
   }
 }
 ```
-#### suppress duplicate items emitted by the source Observable
+#### Suppress duplicate items emitted by the source Observable
 ```java
 private void distinctExample() {
     mDisposable = Observable.just(1, 2, 2, 3, 2, 3, 3)
@@ -357,7 +357,7 @@ private void distinctExample() {
             });
 }
 ```
-#### suppress duplicate consecutive items emitted by the source Observable
+#### Suppress duplicate consecutive items emitted by the source Observable
 ```java
 private void distinctUntilChangedExample() {
     mDisposable = Observable.just(1, 2, 2, 3, 2, 3, 3)
@@ -370,7 +370,7 @@ private void distinctUntilChangedExample() {
             });
 }
 ```
-#### emit only the first n items emitted by an Observable
+#### Emit only the first n items emitted by an Observable
 ```java
 private void takeExample() {
     mDisposable = Observable.create(new ObservableOnSubscribe<String>() {
