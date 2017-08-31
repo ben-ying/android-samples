@@ -426,8 +426,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         // disposing subscription
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
