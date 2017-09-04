@@ -11,9 +11,10 @@ compile "io.reactivex.rxjava2:rxjava:2.1.3"
 compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 // rxBinding
 compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
-compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
 ```
+#### As mentioned above, because your app may be restarted during the permission request, the request must be done during an initialization phase. This may be Activity.onCreate, or View.onFinishInflate, but not pausing methods like onResume, because you'll potentially create an infinite request loop, as your requesting activity is paused by the framework during the permission request.
+
+#### If not, and if your app is restarted during the permission request (because of a configuration change for instance), the user's answer will never be emitted to the subscriber.
 
 ## Usage
 #### Create a RxPermissions instance:
