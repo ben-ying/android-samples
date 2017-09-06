@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Glide</string>
+    <string name="menu_clear_cache">Clear Cache</string>
+    <string name="menu_reload">Reload Image</string>
+</resources>
