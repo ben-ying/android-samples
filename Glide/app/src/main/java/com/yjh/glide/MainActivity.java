@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.MemoryCategory;
+
+import javax.xml.transform.Transformer;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +28,27 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(new GlideAdapter(this));
+
+        // temporarily allow Glide to use more or less memory in certain parts
+        GlideApp.get(this).setMemoryCategory(MemoryCategory.LOW);
+        GlideApp.get(this).setMemoryCategory(MemoryCategory.HIGH);
+        // do something...
+        // Make sure to reset the memory
+        GlideApp.get(this).setMemoryCategory(MemoryCategory.HIGH);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        // reduce memory when on low memory
+        GlideApp.with(this).onLowMemory();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        // reduce memory when trim memory
+        GlideApp.with(this).onTrimMemory(level);
     }
 
     @Override

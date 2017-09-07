@@ -1,6 +1,9 @@
 package com.yjh.glide;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class GlideAdapter extends RecyclerView.Adapter<GlideAdapter.GlideViewHolder> {
 
@@ -51,10 +56,7 @@ public class GlideAdapter extends RecyclerView.Adapter<GlideAdapter.GlideViewHol
     @Override
     public void onBindViewHolder(GlideViewHolder holder, int position) {
         String url = mUrls.get(position);
-        GlideApp.with(mContext)
-                .load(url) // load image with url
-                .placeholder(R.mipmap.ic_launcher) // add place holder
-                .into(holder.imageView);
+        new WidgetHolder(mContext, holder.imageView).showInWidget(url);
     }
 
     @Override
