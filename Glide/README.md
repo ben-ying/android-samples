@@ -49,22 +49,22 @@ public final class MyAppGlideModule extends AppGlideModule {}
 4. Using generated API:
 ```java
 GlideApp.with(mContext)
-                .asBitmap()
+    .asBitmap()
 //                .asCustomGif() // load gif image with MyGlideExtension
 //                .asGif() // load gif image
-                .load(url) // load image with url
-                .placeholder(R.mipmap.ic_launcher) // add place holder
-                .error(new ColorDrawable(Color.RED)) // load image failed
-                .fallback(R.drawable.ic_launcher_background) // url is null
+    .load(url) // load image with url
+    .placeholder(R.mipmap.ic_launcher) // add place holder
+    .error(new ColorDrawable(Color.RED)) // load image failed
+    .fallback(R.drawable.ic_launcher_background) // url is null
 //                .miniThumb() // custom Extension in MyGlideExtension
-                .transition(withCrossFade()) // add transition when show image
-                .thumbnail(0.1f) // thumbnail
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // cache all
+    .transition(withCrossFade()) // add transition when show image
+    .thumbnail(0.1f) // thumbnail
+    .diskCacheStrategy(DiskCacheStrategy.ALL) // cache all
 //                .skipMemoryCache(true) // skip memory cache
 //                .diskCacheStrategy(DiskCacheStrategy.NONE) // skip disk cache
-                // replace cache in new glide version
-                .signature(new ObjectKey(mContext.getResources().getInteger(R.integer.glide_version)))
-                .into(mTarget); // use custom target
+    // replace cache in new glide version
+    .signature(new ObjectKey(mContext.getResources().getInteger(R.integer.glide_version)))
+    .into(mTarget); // use custom target
 ```
 
 
