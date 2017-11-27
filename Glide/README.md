@@ -5,8 +5,9 @@
 1. Open your app’s build.gradle file. This is usually not the top-level build.gradle file but app/build.gradle.
 2. Add the following lines inside dependencies:
 ```java
-compile 'com.github.bumptech.glide:glide:4.3.1'
-annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+dependencies {
+  compile 'com.github.bumptech.glide:glide:4.3.1'
+}
 ```
 If you are using ProGuard in your project add the following lines to your configuration:
 ```java
