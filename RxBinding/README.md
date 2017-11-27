@@ -164,6 +164,7 @@ protected void onCreate(Bundle savedInstanceState) {
     mCompositeDisposable.add(seekBarDisposable);
 }
 
+// or dispose in onDestory()
 @Override
 protected void onStop() {
     super.onStop();
