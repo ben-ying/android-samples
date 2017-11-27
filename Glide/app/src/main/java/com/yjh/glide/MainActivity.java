@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bumptech.glide.MemoryCategory;
-
-import javax.xml.transform.Transformer;
 
 
 public class MainActivity extends AppCompatActivity {

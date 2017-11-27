@@ -17,11 +17,9 @@ import static com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.wi
 public class WidgetHolder {
     private final Context mContext;
     private final Target<Bitmap> mTarget;
-    private final ImageView imageView;
 
     public WidgetHolder(Context context, ImageView imageView) {
         this.mContext = context;
-        this.imageView = imageView;
         this.mTarget = new CustomTarget(imageView);
     }
 
