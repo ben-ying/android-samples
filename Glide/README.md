@@ -5,8 +5,8 @@
 1. Open your app’s build.gradle file. This is usually not the top-level build.gradle file but app/build.gradle.
 2. Add the following lines inside dependencies:
 ```java
-compile 'com.github.bumptech.glide:glide:4.1.1'
-annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+compile 'com.github.bumptech.glide:glide:4.3.1'
+annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 ```
 If you are using ProGuard in your project add the following lines to your configuration:
 ```java
@@ -32,7 +32,7 @@ Glide.with(fragment).clear(imageView);
 1. Add a dependency on Glide’s annotation processor:
 ```java
 dependencies {
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 }
 ```
 2. Include a AppGlideModule implementation in your application:
