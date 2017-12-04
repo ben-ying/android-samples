@@ -5,8 +5,8 @@
 1. Open your app’s build.gradle file. This is usually not the top-level build.gradle file but app/build.gradle.
 2. Add the following lines inside dependencies:
 ```java
-androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.0'
-androidTestCompile 'com.android.support.test:runner:1.0.0'
+androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+androidTestCompile 'com.android.support.test:runner:1.0.1'
 ```
 3. Add to the same build.gradle file the following line in android.defaultConfig:
 ```java
@@ -18,7 +18,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.my.awesome.app"
@@ -33,11 +33,11 @@ android {
 
 dependencies {
     // App's dependencies, including test
-    compile 'com.android.support:support-annotations:22.2.0'
+    compile 'com.android.support:support-annotations:27.0.2'
 
     // Testing-only dependencies
-    androidTestCompile 'com.android.support.test:runner:1.0.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.0'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 ```
 ### To create a test configuration in Android Studio, complete the following steps:
