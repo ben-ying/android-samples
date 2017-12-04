@@ -47,7 +47,123 @@ import com.bumptech.glide.module.AppGlideModule;
 public final class MyAppGlideModule extends AppGlideModule {}
 ```
 3. Make project in Android Studio
-4. Using generated API:
+4. Custom Target(Optional)
+```java
+package com.example.myapp;
+
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.ImageView;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+
+public class CustomTarget implements Target<Bitmap> {
+    private static final String TAG = CustomTarget.class.getSimpleName();
+    private ImageView mImageView;
+
+    public CustomTarget(ImageView imageView) {
+        this.mImageView = imageView;
+    }
+
+    @Nullable
+    @Override
+    public Request getRequest() {
+        return (Request) mImageView.getTag();
+    }
+
+    @Override
+    public void onLoadStarted(@Nullable Drawable placeholder) {
+        mImageView.setImageDrawable(placeholder);
+    }
+
+    @Override
+    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+        mImageView.setImageDrawable(errorDrawable);
+    }
+
+    @Override
+    public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
+        mImageView.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onLoadCleared(@Nullable Drawable placeholder) {
+        Log.d(TAG, "onLoadCleared");
+    }
+
+    @Override
+    public void getSize(SizeReadyCallback cb) {
+        // set image size not imageView
+//        cb.onSizeReady(10, 10);
+        cb.onSizeReady(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+    }
+
+    @Override
+    public void removeCallback(SizeReadyCallback cb) {
+        Log.d(TAG, "removeCallback");
+    }
+
+    @Override
+    public void setRequest(@Nullable Request request) {
+        mImageView.setTag(request);
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy");
+    }
+}
+```
+5. MyGlideExtension(Optional)
+```java
+package com.example.myapp;
+
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.annotation.GlideExtension;
+import com.bumptech.glide.annotation.GlideOption;
+import com.bumptech.glide.annotation.GlideType;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestOptions;
+
+@GlideExtension
+public class MyGlideExtension {
+    // Size of mini thumb in pixels.
+    private static final int MINI_THUMB_SIZE = 100;
+    private static final RequestOptions DECODE_TYPE_GIF = decodeTypeOf(GifDrawable.class).lock();
+
+    private MyGlideExtension() {
+    }
+
+    @GlideOption
+    public static void miniThumb(RequestOptions options) {
+        options.fitCenter().override(MINI_THUMB_SIZE);
+    }
+
+    // support for GIFs
+    @GlideType(GifDrawable.class)
+    public static void asCustomGif(RequestBuilder<GifDrawable> requestBuilder) {
+        requestBuilder
+                .transition(new DrawableTransitionOptions())
+                .apply(DECODE_TYPE_GIF);
+    }
+}
+```
+6. Using generated API:
 ```java
 GlideApp.with(mContext)
     .asBitmap()
